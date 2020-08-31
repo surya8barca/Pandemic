@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "682606752684",
+    "firebase_url": "https://pandemic-cb9d0.firebaseio.com",
+    "project_id": "pandemic-cb9d0",
+    "storage_bucket": "pandemic-cb9d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682606752684:android:865d942718874b45ccc009",
+        "android_client_info": {
+          "package_name": "com.example.android_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682606752684-q3tdl4csmeugco5lh801i9ui1r2nr3ki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoysMvJyF7pn6x3FWVsjxx43aHgRR1k7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682606752684-q3tdl4csmeugco5lh801i9ui1r2nr3ki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
