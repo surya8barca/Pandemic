@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Data</title>
+</head>
+<body>
+    <header>
+        <div id="headings">
+            <center>
+                <h1>Getting Districts</h1>
+            </center>
+        </div>
+    </header>
+    <div id='form'>
+        <form method="GET" action="/districts" enctype="multipart/form-data">
+<fieldset>
+            <p>
+             <label>State</label>
+             <select name ='State' id = "State"></select>
+            <br><br>     
+                       
+            <input type="submit" name="" value="Submit">
+</fieldset>
+        </form>
+    </div>
+    <script> 
+        var select = document.getElementById("State"); 
+        var states=['Andaman Nicobar', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam',
+       'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra Nagar Haveli',
+       'Daman Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana',
+       'Himachal Pradesh', 'Jammu Kashmir', 'Jharkhand', 'Karnataka',
+       'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra',
+       'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha',
+       'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu',
+       'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand',
+       'West Bengal']; 
+        for (var i = 0; i < states.length; i++) { 
+            var optn = states[i]; 
+            var el = document.createElement("option"); 
+            el.textContent = optn; 
+            el.value = optn; 
+            select.appendChild(el); 
+        } 
+        
+    </script> 
+</body>
+</html>
