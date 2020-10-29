@@ -22,22 +22,22 @@ class _LoadingState extends State<Loading> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: MediaQuery.of(context).size.width/9.5,
+                      fontSize: MediaQuery.of(context).size.height/19,
                       color: Colors.red),
                 ),
-                SizedBox(height:MediaQuery.of(context).size.width/32),
+                SizedBox(height:MediaQuery.of(context).size.height/64),
                 Text(
                   'Alert, Detection and Tracker',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.width/10,
+                    fontSize: MediaQuery.of(context).size.height/20,
                     color: Colors.blue,
                   ),
                 ),
                 SpinKitPumpingHeart(
                   color: Colors.red,
-                  size: MediaQuery.of(context).size.width/2,
+                  size: MediaQuery.of(context).size.height/4,
                 ),
               ],
             ),

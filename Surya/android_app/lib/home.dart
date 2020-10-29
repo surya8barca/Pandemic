@@ -1,6 +1,8 @@
 import 'package:android_app/Shared/loadingscreen.dart';
 import 'package:flutter/material.dart';
 
+import 'Hive/auth/login.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -28,27 +30,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     if (start == false) {
       return Loading();
-    } else { //auth page if no user already logged in
-      return SafeArea(
-              child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blueGrey,
-            centerTitle: true,
-            title: Text(
-              'Pandemic',
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.08,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          body: Builder(
-            builder: (context) => SingleChildScrollView(
-              child: Container(),
-            ),
-          ),
-        ),
-      );
+    } else {
+      //auth page if no user already logged in
+      return Login();
     }
   }
 }
