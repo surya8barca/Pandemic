@@ -1,7 +1,7 @@
 import 'package:android_app/Shared/loadingscreen.dart';
 import 'package:flutter/material.dart';
 
-import 'Hive/auth/login.dart';
+import 'auth/login.dart';
 
 class Home extends StatefulWidget {
   @override

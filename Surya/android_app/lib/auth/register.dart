@@ -1,5 +1,7 @@
 import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart';
@@ -23,7 +25,8 @@ class _HomeState extends State<Register> {
       address1,
       district,
       dob,
-      formDob = "Date of Birth";
+      formDob = "Date of Birth",
+      userid;
   int aadharCardNo, mobileNo;
   List states = [
         'Andaman Nicobar',
@@ -66,6 +69,10 @@ class _HomeState extends State<Register> {
       ],
       districts = [];
 
+  User temp;
+  final CollectionReference fire =
+      FirebaseFirestore.instance.collection('UserData');
+
   Future<void> getdistricts() async {
     try {
       String url = 'https://getdistricts.herokuapp.com/districts/?State=$state';
@@ -77,36 +84,88 @@ class _HomeState extends State<Register> {
       print(districts);
     } catch (e) {
       Navigator.pop(context);
-      Alert(context: context, title: 'Error', desc: e.message, buttons: [])
+      Alert(
+              context: context,
+              title: 'Error',
+              desc: e.message,
+              buttons: [],
+              style:
+                  AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
           .show();
-      await Future.delayed(Duration(seconds: 2));
-      Navigator.pop(context);
+      await Future.delayed(Duration(seconds: 3));
     }
   }
-  /*
-  //functions
-  Future<bool> login() async {
+
+  bool checkdetails() {
+    if (email != null &&
+        password != null &&
+        name != null &&
+        dob != null &&
+        mobileNo.toString().length == 10 &&
+        aadharCardNo.toString().length == 12 &&
+        address1 != null &&
+        city != null &&
+        state != null &&
+        district != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> registeruser() async {
     try {
-      AuthResult result = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      await Firebase.initializeApp();
+      UserCredential result = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
       setState(() {
+        temp = result.user;
         userid = result.user.uid;
       });
-     
-      if (rememberme) {
-        await userbox.add(Userinfo(userid: userid, usertype: usertype));
-      }
       return true;
     } catch (e) {
       Navigator.pop(context);
       Alert(
-          context: context,
-          title: 'Login Error',
-          desc: e.message,
-          buttons: []).show();
+              context: context,
+              title: 'Registration Error',
+              desc: e.message,
+              buttons: [],
+              style:
+                  AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
+          .show();
+      await Future.delayed(Duration(seconds: 3));
       return false;
     }
-  }*/
+  }
+
+  Future<bool> adddetails() async {
+    try {
+      String address =
+          (address1 + ", " + city + ", " + district + ", " + state);
+      List risk = [];
+      fire.doc(userid).set({
+        'name': name,
+        'date_of_birth': dob,
+        'mobile_no': mobileNo,
+        'aadhar': aadharCardNo,
+        'address': address,
+        'risk': risk,
+      });
+      return true;
+    } catch (e) {
+      Navigator.pop(context);
+      Alert(
+              context: context,
+              title: 'Registration Error',
+              desc: e.message,
+              buttons: [],
+              style:
+                  AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
+          .show();
+      await Future.delayed(Duration(seconds: 3));
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,8 +223,10 @@ class _HomeState extends State<Register> {
                       ),
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        decoration:
-                            fieldDecoration.copyWith(labelText: 'Full Name'),
+                        maxLength: 20,
+                        maxLengthEnforced: true,
+                        decoration: fieldDecoration.copyWith(
+                            labelText: 'Full Name', helperText: '*required'),
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize: MediaQuery.of(context).size.height / 32),
@@ -225,14 +286,23 @@ class _HomeState extends State<Register> {
                           ),
                         ),
                       ),
+                      Text(
+                        '*required',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: MediaQuery.of(context).size.height / 50,
+                        ),
+                      ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 32,
                       ),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.next,
+                        maxLength: 10,
                         decoration: fieldDecoration.copyWith(
                           labelText: 'Mobile Number',
+                          helperText: '*required',
                         ),
                         style: TextStyle(
                             color: Colors.blue,
@@ -251,8 +321,10 @@ class _HomeState extends State<Register> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.next,
+                        maxLength: 12,
                         decoration: fieldDecoration.copyWith(
                           labelText: 'Aadhar Card Number',
+                          helperText: '*required',
                         ),
                         style: TextStyle(
                             color: Colors.blue,
@@ -270,8 +342,12 @@ class _HomeState extends State<Register> {
                       ),
                       TextFormField(
                         textInputAction: TextInputAction.next,
+                        maxLength: 50,
+                        minLines: 2,
+                        maxLines: 2,
                         decoration: fieldDecoration.copyWith(
-                            labelText: 'Address Line 1'),
+                            labelText: 'Address Line 1',
+                            helperText: '*required'),
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize: MediaQuery.of(context).size.height / 32),
@@ -288,7 +364,11 @@ class _HomeState extends State<Register> {
                       ),
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        decoration: fieldDecoration.copyWith(labelText: 'City'),
+                        maxLength: 15,
+                        decoration: fieldDecoration.copyWith(
+                          labelText: 'City',
+                          helperText: '*required',
+                        ),
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize: MediaQuery.of(context).size.height / 32),
@@ -371,11 +451,12 @@ class _HomeState extends State<Register> {
                             setState(() {
                               state = chosen;
                             });
-                            await Future.delayed(Duration(milliseconds: 30));
                             Alert(
                                 context: context,
                                 style: AlertStyle(
                                   backgroundColor: Colors.white,
+                                  isOverlayTapDismiss: false,
+                                  isCloseButton: false,
                                 ),
                                 title: "Please wait",
                                 desc: "Getting District List...",
@@ -387,6 +468,13 @@ class _HomeState extends State<Register> {
                             Navigator.pop(context);
                           },
                           value: state,
+                        ),
+                      ),
+                      Text(
+                        '*required',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: MediaQuery.of(context).size.height / 50,
                         ),
                       ),
                       SizedBox(
@@ -465,6 +553,13 @@ class _HomeState extends State<Register> {
                           value: district,
                         ),
                       ),
+                      Text(
+                        '*required',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: MediaQuery.of(context).size.height / 50,
+                        ),
+                      ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 32,
                       ),
@@ -482,7 +577,9 @@ class _HomeState extends State<Register> {
                       TextFormField(
                         textInputAction: TextInputAction.next,
                         decoration: fieldDecoration.copyWith(
-                            labelText: 'Email Address'),
+                            labelText: 'Email Address',
+                            hintText: 'Example@domain.com',
+                            helperText: '*required'),
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize: MediaQuery.of(context).size.height / 32),
@@ -502,6 +599,7 @@ class _HomeState extends State<Register> {
                         obscureText: hidepassword,
                         decoration: fieldDecoration.copyWith(
                           labelText: 'Password',
+                          helperText: '*required',
                           suffixIcon: IconButton(
                             icon: Icon(
                               Icons.remove_red_eye,
@@ -538,7 +636,68 @@ class _HomeState extends State<Register> {
                         height: MediaQuery.of(context).size.height / 10.666,
                         buttonColor: Colors.cyan,
                         child: RaisedButton(
-                          onPressed: () async {},
+                          onPressed: () async {
+                            Alert(
+                                context: context,
+                                style: AlertStyle(
+                                  backgroundColor: Colors.white,
+                                  isOverlayTapDismiss: false,
+                                  isCloseButton: false,
+                                ),
+                                title: "Please wait",
+                                desc: "Registering User...",
+                                buttons: [],
+                                content: Container(
+                                  child: SpinKitCircle(color: Colors.blue),
+                                )).show();
+                            if (checkdetails()) {
+                              bool confirmation1 = await registeruser();
+                              if (confirmation1) {
+                                bool confirmation2 = await adddetails();
+                                if (confirmation2) {
+                                  Navigator.pop(context);
+                                  Alert(
+                                          context: context,
+                                          title: 'User Registered',
+                                          desc: 'Redirecting to Login page..',
+                                          buttons: [],
+                                          content: Container(
+                                            child: SpinKitCircle(
+                                                color: Colors.blue),
+                                          ),
+                                          style: AlertStyle(
+                                              isCloseButton: false,
+                                              isOverlayTapDismiss: false))
+                                      .show();
+                                  await Future.delayed(Duration(seconds: 3));
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Login(),
+                                      ));
+                                } else {
+                                  temp.delete();
+                                }
+                              } else {
+                                Navigator.pop(context);
+                              }
+                            } else {
+                              Navigator.pop(context);
+                              Alert(
+                                      context: context,
+                                      title: 'Invalid Input',
+                                      desc:
+                                          'All inputs are required and in correct format',
+                                      buttons: [],
+                                      style: AlertStyle(
+                                          isCloseButton: false,
+                                          isOverlayTapDismiss: false))
+                                  .show();
+                              await Future.delayed(Duration(seconds: 2));
+                              Navigator.pop(context);
+                            }
+                          },
                           child: Text(
                             'Register',
                             style: TextStyle(
