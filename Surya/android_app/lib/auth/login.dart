@@ -229,41 +229,6 @@ class _HomeState extends State<Login> {
                                     builder: (context) => UserHome(userid),
                                   ));
                             }
-                            /*
-                          if (email != null &&
-                              password != null) {
-                            Alert(
-                                context: context,
-                                style: AlertStyle(
-                                  backgroundColor: Colors.white,
-                                ),
-                                title: "Please wait",
-                                desc: "Loggin user in...",
-                                buttons: [],
-                                content: Container(
-                                  child: SpinKitCircle(color: Colors.blue),
-                                )).show();
-                            bool status = await login();
-                            if (status) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UserHome(
-                                            userid: userid,
-                                            usertype: usertype,
-                                          )),
-                                  (route) => false);
-                            }
-                          } else {
-                            Alert(
-                                    context: context,
-                                    title: 'Empty Fields',
-                                    desc: 'All fields are mandatory',
-                                    buttons: [],
-                                    style: AlertStyle(
-                                        backgroundColor: Colors.cyan))
-                                .show();
-                          }*/
                           },
                           child: Text(
                             'Login',
