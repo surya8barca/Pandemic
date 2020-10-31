@@ -1,5 +1,7 @@
 import 'package:android_app/Shared/loadingscreen.dart';
+import 'package:android_app/User/userhome.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import 'auth/login.dart';
 
@@ -10,6 +12,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool start = false;
+  final box = Hive.box('currentuser');
   //device height = 640
   //device width  =320
 
@@ -31,8 +34,13 @@ class _HomeState extends State<Home> {
     if (start == false) {
       return Loading();
     } else {
+      if (box.length == 0) {
+        return Login();
+      } else {
+        return UserHome(box.getAt(0));
+      }
       //auth page if no user already logged in
-      return Login();
+
     }
   }
 }

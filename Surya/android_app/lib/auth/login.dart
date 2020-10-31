@@ -1,6 +1,9 @@
-
+import 'package:android_app/User/userhome.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hive/hive.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'register.dart';
@@ -13,7 +16,38 @@ class Login extends StatefulWidget {
 class _HomeState extends State<Login> {
   //variables
   bool hidepassword = true, rememberme = false;
-  String email, password;
+  String email, password, userid;
+
+  final box = Hive.box('currentuser');
+
+  Future<bool> login() async {
+    try {
+      UserCredential result = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      setState(() {
+        userid = result.user.uid;
+      });
+      if (rememberme) {
+        await box.add(userid);
+      }
+      return true;
+    }
+     catch (e) {
+      Navigator.pop(context);
+      Alert(
+          context: context,
+          title: 'Login Error',
+          desc: e.message,
+          style: AlertStyle(isCloseButton: false, isOverlayTapDismiss: false),
+          buttons: []).show();
+      await Future.delayed(Duration(seconds: 3));
+      if (box.length != 0) {
+        box.deleteAt(0);
+      }
+      Navigator.pop(context);
+      return false;
+    }
+  }
   /*
   //functions
   Future<bool> login() async {
@@ -173,6 +207,28 @@ class _HomeState extends State<Login> {
                         buttonColor: Colors.cyan,
                         child: RaisedButton(
                           onPressed: () async {
+                            Alert(
+                                context: context,
+                                style: AlertStyle(
+                                  backgroundColor: Colors.white,
+                                  isCloseButton: false,
+                                  isOverlayTapDismiss: false,
+                                ),
+                                title: "Please wait",
+                                desc: "Loggin user in...",
+                                buttons: [],
+                                content: Container(
+                                  child: SpinKitCircle(color: Colors.blue),
+                                )).show();
+                            bool result = await login();
+                            if (result) {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserHome(userid),
+                                  ));
+                            }
                             /*
                           if (email != null &&
                               password != null) {
@@ -253,12 +309,11 @@ class _HomeState extends State<Login> {
                         buttonColor: Colors.blue,
                         child: RaisedButton(
                           onPressed: () {
-                            
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Register(),
-                              ));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Register(),
+                                ));
                           },
                           child: Text(
                             'Register',
@@ -291,15 +346,15 @@ class _HomeState extends State<Login> {
                             fontSize: MediaQuery.of(context).size.height / 32,
                             color: Colors.red),
                       ),
-                Text(
-                  'Alert, Detection and Tracker',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.height/32,
-                    color: Colors.blue,
-                  ),
-                ),
+                      Text(
+                        'Alert, Detection and Tracker',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.height / 32,
+                          color: Colors.blue,
+                        ),
+                      ),
                     ],
                   ),
                 ),
