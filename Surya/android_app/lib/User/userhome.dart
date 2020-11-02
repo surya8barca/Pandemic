@@ -1,7 +1,8 @@
+import 'package:android_app/Shared/drawerContainer.dart';
 import 'package:android_app/Shared/loadingscreen.dart';
+import 'package:android_app/User/stepOut/map.dart';
 import 'package:android_app/auth/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive/hive.dart';
@@ -43,8 +44,9 @@ class _HomeState extends State<UserHome> {
         });
       } else {
         setState(() {
-          riskDisplay =
-              'Your latest COVID-19 Risk Percentage: ' + risk[-1].toString()+'\nTake the quiz for latest report';
+          riskDisplay = 'Your latest COVID-19 Risk Percentage: ' +
+              risk[-1].toString() +
+              '\nTake the quiz for latest report';
         });
       }
     } catch (e) {
@@ -93,178 +95,8 @@ class _HomeState extends State<UserHome> {
     if (ready) {
       return Scaffold(
         drawer: Drawer(
-          child: Container(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width / 32),
-            color: Colors.cyan,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Text(
-                          name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height / 25.6,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Divider(
-                  color: Colors.black,
-                  thickness: MediaQuery.of(context).size.width / 106.66,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 128,
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    Alert(
-                      context: context,
-                      style: AlertStyle(
-                        backgroundColor: Colors.cyan,
-                        isCloseButton: false,
-                        isOverlayTapDismiss: false,
-                      ),
-                      title: "Logout",
-                      desc: "Are you sure you want to logout?",
-                      buttons: [],
-                      content: Padding(
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width / 21.333),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            ButtonTheme(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      MediaQuery.of(context).size.height / 32)),
-                              buttonColor: Colors.black,
-                              child: RaisedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'No',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.height / 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            ButtonTheme(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              buttonColor: Colors.black,
-                              child: RaisedButton(
-                                onPressed: () async {
-                                  Alert(
-                                      context: context,
-                                      style: AlertStyle(
-                                        backgroundColor: Colors.white,
-                                        isCloseButton: false,
-                                        isOverlayTapDismiss: false,
-                                      ),
-                                      title: "Signing Out...",
-                                      buttons: [],
-                                      content: Container(
-                                        child:
-                                            SpinKitCircle(color: Colors.blue),
-                                      )).show();
-                                  await FirebaseAuth.instance.signOut();
-                                  if (box.length != 0) {
-                                    await box.deleteAt(0);
-                                  }
-                                  await Future.delayed(Duration(seconds: 2));
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Login(),
-                                      ),
-                                      (route) => false);
-                                },
-                                child: Text(
-                                  'Yes',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.height / 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ).show();
-                  },
-                  padding:
-                      EdgeInsets.all(MediaQuery.of(context).size.width / 32),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        MediaQuery.of(context).size.width / 21.33),
-                  ),
-                  elevation: MediaQuery.of(context).size.height / 64,
-                  child: Text(
-                    'Sign Out',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.height / 21.33,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                        height: MediaQuery.of(context).size.height / 32,
-                      ),
-                      Divider(
-                        height: MediaQuery.of(context).size.height / 128,
-                        thickness: MediaQuery.of(context).size.height / 320,
-                        color: Colors.black,
-                        indent: MediaQuery.of(context).size.width / 10.666,
-                        endIndent: MediaQuery.of(context).size.width / 10.666,
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 64,
-                      ),
-                      Text(
-                        'PANDEMIC',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height / 32,
-                            color: Colors.red),
-                      ),
-                      Text(
-                        'Alert, Detection and Tracker',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: MediaQuery.of(context).size.height / 32,
-                          color: Colors.black,
-                        ),
-                      ),
-              ],
-            ),
-          ),
+          child: DrawerC(name: name, box: box),
         ),
-
         appBar: AppBar(
           backgroundColor: Colors.cyan,
           centerTitle: true,
@@ -280,7 +112,7 @@ class _HomeState extends State<UserHome> {
           builder: (context) => SingleChildScrollView(
             child: Container(
               height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.all(MediaQuery.of(context).size.width/32),
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width / 32),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('images/back.png'),
@@ -290,7 +122,7 @@ class _HomeState extends State<UserHome> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height/5),
+                  SizedBox(height: MediaQuery.of(context).size.height / 5),
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -301,66 +133,89 @@ class _HomeState extends State<UserHome> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.yellow,
-                            fontSize: MediaQuery.of(context).size.height/28,
+                            fontSize: MediaQuery.of(context).size.height / 28,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(
-                      height: MediaQuery.of(context).size.height / 32,
-                    ),
-                    ButtonTheme(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(
-                              MediaQuery.of(context).size.width / 10.666)),
-                      minWidth: MediaQuery.of(context).size.width / 3,
-                      height: MediaQuery.of(context).size.height / 14,
-                      buttonColor: Colors.cyan,
-                      child: RaisedButton(
-                        onPressed: () async {
-                        },
-                        child: Text(
-                          'Quiz',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize:
-                                MediaQuery.of(context).size.height / 21.333,
+                          height: MediaQuery.of(context).size.height / 32,
+                        ),
+                        ButtonTheme(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(
+                                  MediaQuery.of(context).size.width / 10.666)),
+                          minWidth: MediaQuery.of(context).size.width / 3,
+                          height: MediaQuery.of(context).size.height / 14,
+                          buttonColor: Colors.cyan,
+                          child: RaisedButton(
+                            onPressed: () async {},
+                            child: Text(
+                              'Quiz',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 21.333,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 32,
+                        ),
+                        ButtonTheme(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(
+                                  MediaQuery.of(context).size.width / 10.666)),
+                          minWidth: MediaQuery.of(context).size.width / 3,
+                          height: MediaQuery.of(context).size.height / 14,
+                          buttonColor: Colors.cyan,
+                          child: RaisedButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => MapHome(name: name)));
+                            },
+                            child: Text(
+                              'Step Out',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 21.333,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   SizedBox(
-                        height: MediaQuery.of(context).size.height / 32,
-                      ),
-                      Divider(
-                        height: MediaQuery.of(context).size.height / 128,
-                        thickness: MediaQuery.of(context).size.height / 320,
-                        color: Colors.blueAccent,
-                        indent: MediaQuery.of(context).size.width / 10.666,
-                        endIndent: MediaQuery.of(context).size.width / 10.666,
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 64,
-                      ),
-                      Text(
-                        'PANDEMIC',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height / 32,
-                            color: Colors.red),
-                      ),
-                      Text(
-                        'Alert, Detection and Tracker',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: MediaQuery.of(context).size.height / 32,
-                          color: Colors.yellow,
-                        ),
-                      ),
+                    height: MediaQuery.of(context).size.height / 32,
+                  ),
+                  Divider(
+                    height: MediaQuery.of(context).size.height / 128,
+                    thickness: MediaQuery.of(context).size.height / 320,
+                    color: Colors.blueAccent,
+                    indent: MediaQuery.of(context).size.width / 10.666,
+                    endIndent: MediaQuery.of(context).size.width / 10.666,
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 64,
+                  ),
+                  Text(
+                    'PANDEMIC',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.height / 32,
+                        color: Colors.red),
+                  ),
+                  Text(
+                    'Alert, Detection and Tracker',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.height / 32,
+                      color: Colors.yellow,
+                    ),
+                  ),
                 ],
               ),
             ),

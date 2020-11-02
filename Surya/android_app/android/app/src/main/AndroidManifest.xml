@@ -9,6 +9,8 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="Pandemic"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyA-Uz5RbrcKJz1c31VAIRc-fdIOvDUk3pA"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -45,4 +47,6 @@
             android:value="2" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE-LOCATION" />
+    
 </manifest>
