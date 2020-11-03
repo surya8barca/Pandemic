@@ -1,4 +1,7 @@
 import 'package:android_app/User/userhome.dart';
+import 'package:android_app/details/helpline/helpline.dart';
+import 'package:android_app/details/precaution/precautions.dart';
+import 'package:android_app/details/stats/stats.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,31 +51,7 @@ class _HomeState extends State<Login> {
       return false;
     }
   }
-  /*
-  //functions
-  Future<bool> login() async {
-    try {
-      AuthResult result = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      setState(() {
-        userid = result.user.uid;
-      });
-     
-      if (rememberme) {
-        await userbox.add(Userinfo(userid: userid, usertype: usertype));
-      }
-      return true;
-    } catch (e) {
-      Navigator.pop(context);
-      Alert(
-          context: context,
-          title: 'Login Error',
-          desc: e.message,
-          buttons: []).show();
-      return false;
-    }
-  }*/
-
+ 
   @override
   Widget build(BuildContext context) {
     var fieldDecoration = InputDecoration(
@@ -292,6 +271,118 @@ class _HomeState extends State<Login> {
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 32,
+                      ),
+                      Divider(
+                        height: MediaQuery.of(context).size.height / 128,
+                        thickness: MediaQuery.of(context).size.height / 320,
+                        color: Colors.blueAccent,
+                        indent: MediaQuery.of(context).size.width / 10.666,
+                        endIndent: MediaQuery.of(context).size.width / 10.666,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 64,
+                      ),
+                      Text(
+                        'COVID-19\nDetails and Guidelines',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.height / 24,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 64,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ButtonTheme(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(
+                                MediaQuery.of(context).size.width / 10.666)),
+                        minWidth: MediaQuery.of(context).size.width / 1.5,
+                        height: MediaQuery.of(context).size.height / 10.666,
+                        buttonColor: Colors.cyan,
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Stats(),
+                                ));
+                          },
+                          child: Text(
+                            'Statistics',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize:
+                                  MediaQuery.of(context).size.height / 21.333,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 64,
+                      ),
+                      ButtonTheme(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(
+                                MediaQuery.of(context).size.width / 10.666)),
+                        minWidth: MediaQuery.of(context).size.width / 1.5,
+                        height: MediaQuery.of(context).size.height / 10.666,
+                        buttonColor: Colors.cyan,
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Precautions(),
+                                ));
+                          },
+                          child: Text(
+                            'Precautions',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize:
+                                  MediaQuery.of(context).size.height / 21.333,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 64,
+                      ),
+                      ButtonTheme(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(
+                                MediaQuery.of(context).size.width / 10.666)),
+                        minWidth: MediaQuery.of(context).size.width / 1.5,
+                        height: MediaQuery.of(context).size.height / 10.666,
+                        buttonColor: Colors.cyan,
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HelpLine(),
+                                ));
+                          },
+                          child: Text(
+                            'Helpline',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize:
+                                  MediaQuery.of(context).size.height / 21.333,
+                            ),
+                          ),
+                        ),
+                      ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 64,
                       ),
                       Divider(
                         height: MediaQuery.of(context).size.height / 128,

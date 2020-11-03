@@ -25,9 +25,10 @@ class _HomeState extends State<Register> {
       address1,
       district,
       dob,
+      gender,
       formDob = "Date of Birth",
       userid;
-  int aadharCardNo, mobileNo;
+  int aadharCardNo, mobileNo,age;
   List states = [
         'Andaman Nicobar',
         'Andhra Pradesh',
@@ -66,7 +67,7 @@ class _HomeState extends State<Register> {
         'Uttar Pradesh',
         'Uttarakhand',
         'West Bengal'
-      ],
+      ],genders=['Male','Female','Other'],
       districts = [];
 
   User temp;
@@ -145,10 +146,16 @@ class _HomeState extends State<Register> {
       List risk = [];
       fire.doc(userid).set({
         'name': name,
+        'age':age,
+        'gender':gender,
         'date_of_birth': dob,
         'mobile_no': mobileNo,
         'aadhar': aadharCardNo,
-        'address': address,
+        'address_line': address1,
+        'city':city,
+        'district':district,
+        'state':state,
+        'final_address':address,
         'risk': risk,
       });
       return true;
@@ -234,6 +241,110 @@ class _HomeState extends State<Register> {
                           if (value != null) {
                             setState(() {
                               name = value;
+                            });
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 32,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width / 64),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.blue,
+                              width: MediaQuery.of(context).size.width / 160),
+                          borderRadius: BorderRadius.circular(
+                              MediaQuery.of(context).size.width / 12.8),
+                          color: Colors.white,
+                        ),
+                        child: DropdownButton(
+                          iconEnabledColor: Colors.blue,
+                          underline: Container(),
+                          hint: Text(
+                            'Select Gender:',
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.height / 25.6,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          isExpanded: true,
+                          items: genders.map<DropdownMenuItem<String>>((value) {
+                            return DropdownMenuItem<String>(
+                              child: Container(
+                                padding: EdgeInsets.all(
+                                    MediaQuery.of(context).size.width / 64),
+                                height:
+                                    MediaQuery.of(context).size.height / 10.66,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.blue,
+                                      width: MediaQuery.of(context).size.width /
+                                          160),
+                                  borderRadius: BorderRadius.circular(
+                                      MediaQuery.of(context).size.width / 32),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      value,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              42.666,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              value: value,
+                            );
+                          }).toList(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          onChanged: (chosen) async {
+                            setState(() {
+                              gender = chosen;
+                            });
+                          },
+                          value: gender,
+                        ),
+                      ),
+                      Text(
+                        '*required',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: MediaQuery.of(context).size.height / 50,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 32,
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
+                        maxLength: 3,
+                        decoration: fieldDecoration.copyWith(
+                          labelText: 'Age',
+                          helperText: '*required',
+                        ),
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: MediaQuery.of(context).size.height / 32),
+                        onChanged: (value) {
+                          if (value != null) {
+                            setState(() {
+                              age = int.parse(value);
                             });
                           }
                         },
@@ -342,7 +453,7 @@ class _HomeState extends State<Register> {
                       ),
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        maxLength: 50,
+                        maxLength: 80,
                         minLines: 2,
                         maxLines: 2,
                         decoration: fieldDecoration.copyWith(

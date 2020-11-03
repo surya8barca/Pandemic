@@ -10,10 +10,12 @@ class DrawerC extends StatelessWidget {
     Key key,
     @required this.name,
     @required this.box,
+    @required this.age,
   }) : super(key: key);
 
   final String name;
   final Box box;
+  final int age;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,20 @@ class DrawerC extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                )
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height/128,
+                ),
+                Center(
+                  child: Text(
+                    age.toString()+" years",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height / 25.6,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -81,8 +96,7 @@ class DrawerC extends StatelessWidget {
                             'No',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 32,
+                              fontSize: MediaQuery.of(context).size.height / 32,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -105,8 +119,7 @@ class DrawerC extends StatelessWidget {
                                 title: "Signing Out...",
                                 buttons: [],
                                 content: Container(
-                                  child:
-                                      SpinKitCircle(color: Colors.blue),
+                                  child: SpinKitCircle(color: Colors.blue),
                                 )).show();
                             await FirebaseAuth.instance.signOut();
                             if (box.length != 0) {
@@ -124,8 +137,7 @@ class DrawerC extends StatelessWidget {
                             'Yes',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 32,
+                              fontSize: MediaQuery.of(context).size.height / 32,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -137,8 +149,7 @@ class DrawerC extends StatelessWidget {
                 ),
               ).show();
             },
-            padding:
-                EdgeInsets.all(MediaQuery.of(context).size.width / 32),
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width / 32),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                   MediaQuery.of(context).size.width / 21.33),
@@ -155,35 +166,35 @@ class DrawerC extends StatelessWidget {
             ),
           ),
           SizedBox(
-                  height: MediaQuery.of(context).size.height / 32,
-                ),
-                Divider(
-                  height: MediaQuery.of(context).size.height / 128,
-                  thickness: MediaQuery.of(context).size.height / 320,
-                  color: Colors.black,
-                  indent: MediaQuery.of(context).size.width / 10.666,
-                  endIndent: MediaQuery.of(context).size.width / 10.666,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 64,
-                ),
-                Text(
-                  'PANDEMIC',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: MediaQuery.of(context).size.height / 32,
-                      color: Colors.red),
-                ),
-                Text(
-                  'Alert, Detection and Tracker',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.height / 32,
-                    color: Colors.black,
-                  ),
-                ),
+            height: MediaQuery.of(context).size.height / 32,
+          ),
+          Divider(
+            height: MediaQuery.of(context).size.height / 128,
+            thickness: MediaQuery.of(context).size.height / 320,
+            color: Colors.black,
+            indent: MediaQuery.of(context).size.width / 10.666,
+            endIndent: MediaQuery.of(context).size.width / 10.666,
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 64,
+          ),
+          Text(
+            'PANDEMIC',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: MediaQuery.of(context).size.height / 32,
+                color: Colors.red),
+          ),
+          Text(
+            'Alert, Detection and Tracker',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: MediaQuery.of(context).size.height / 32,
+              color: Colors.black,
+            ),
+          ),
         ],
       ),
     );

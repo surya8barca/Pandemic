@@ -18,8 +18,8 @@ class UserHome extends StatefulWidget {
 
 class _HomeState extends State<UserHome> {
   final box = Hive.box('currentuser');
-  String name, dob, address, riskDisplay;
-  int mobno, aadhar;
+  String name, dob, address, riskDisplay, gender;
+  int mobno, aadhar, age;
   List risk;
   bool ready = false;
 
@@ -31,8 +31,10 @@ class _HomeState extends State<UserHome> {
           .get();
       setState(() {
         name = data.data()['name'];
+        age = data.data()['age'];
+        gender = data.data()['gender'];
         dob = data.data()['date_of_birth'];
-        address = data.data()['address'];
+        address = data.data()['final_address'];
         mobno = data.data()['mobile_no'];
         aadhar = data.data()['aadhar'];
         risk = data.data()['risk'];
@@ -95,7 +97,7 @@ class _HomeState extends State<UserHome> {
     if (ready) {
       return Scaffold(
         drawer: Drawer(
-          child: DrawerC(name: name, box: box),
+          child: DrawerC(name: name, box: box,age: age,),
         ),
         appBar: AppBar(
           backgroundColor: Colors.cyan,
@@ -171,7 +173,11 @@ class _HomeState extends State<UserHome> {
                           buttonColor: Colors.cyan,
                           child: RaisedButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => MapHome(name: name)));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MapHome(name: name)));
                             },
                             child: Text(
                               'Step Out',
