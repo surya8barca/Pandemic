@@ -7,42 +7,41 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-          child: Scaffold(
-          backgroundColor: Colors.white,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'PANDEMIC',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: MediaQuery.of(context).size.height/19,
-                      color: Colors.red),
-                ),
-                SizedBox(height:MediaQuery.of(context).size.height/64),
-                Text(
-                  'Alert, Detection and Tracker',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'PANDEMIC',
+                textAlign: TextAlign.center,
+                style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.height/20,
-                    color: Colors.blue,
-                  ),
+                    fontSize: MediaQuery.of(context).size.height / 19,
+                    color: Colors.red),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height / 64),
+              Text(
+                'Alert, Detection and Tracker',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.height / 20,
+                  color: Colors.blue,
                 ),
-                SpinKitPumpingHeart(
-                  color: Colors.red,
-                  size: MediaQuery.of(context).size.height/4,
-                ),
-              ],
-            ),
+              ),
+              SpinKitPumpingHeart(
+                color: Colors.red,
+                size: MediaQuery.of(context).size.height / 4,
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }

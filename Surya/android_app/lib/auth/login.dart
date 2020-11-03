@@ -34,8 +34,7 @@ class _HomeState extends State<Login> {
         await box.add(userid);
       }
       return true;
-    }
-     catch (e) {
+    } catch (e) {
       Navigator.pop(context);
       Alert(
           context: context,
@@ -51,7 +50,7 @@ class _HomeState extends State<Login> {
       return false;
     }
   }
- 
+
   @override
   Widget build(BuildContext context) {
     var fieldDecoration = InputDecoration(
@@ -299,86 +298,89 @@ class _HomeState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ButtonTheme(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(
-                                MediaQuery.of(context).size.width / 10.666)),
-                        minWidth: MediaQuery.of(context).size.width / 1.5,
-                        height: MediaQuery.of(context).size.height / 10.666,
-                        buttonColor: Colors.cyan,
-                        child: RaisedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Stats(),
-                                ));
-                          },
-                          child: Text(
-                            'Statistics',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 21.333,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(
+                                    MediaQuery.of(context).size.width /
+                                        10.666)),
+                            minWidth: MediaQuery.of(context).size.width / 1.5,
+                            height: MediaQuery.of(context).size.height / 10.666,
+                            buttonColor: Colors.cyan,
+                            child: RaisedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Stats(),
+                                    ));
+                              },
+                              child: Text(
+                                'Statistics',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.height /
+                                      21.333,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 64,
-                      ),
-                      ButtonTheme(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(
-                                MediaQuery.of(context).size.width / 10.666)),
-                        minWidth: MediaQuery.of(context).size.width / 1.5,
-                        height: MediaQuery.of(context).size.height / 10.666,
-                        buttonColor: Colors.cyan,
-                        child: RaisedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Precautions(),
-                                ));
-                          },
-                          child: Text(
-                            'Precautions',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 21.333,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 64,
+                          ),
+                          ButtonTheme(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(
+                                    MediaQuery.of(context).size.width /
+                                        10.666)),
+                            minWidth: MediaQuery.of(context).size.width / 1.5,
+                            height: MediaQuery.of(context).size.height / 10.666,
+                            buttonColor: Colors.cyan,
+                            child: RaisedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Precautions(),
+                                    ));
+                              },
+                              child: Text(
+                                'Precautions',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.height /
+                                      21.333,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 64,
-                      ),
-                      ButtonTheme(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(
-                                MediaQuery.of(context).size.width / 10.666)),
-                        minWidth: MediaQuery.of(context).size.width / 1.5,
-                        height: MediaQuery.of(context).size.height / 10.666,
-                        buttonColor: Colors.cyan,
-                        child: RaisedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HelpLine(),
-                                ));
-                          },
-                          child: Text(
-                            'Helpline',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                                  MediaQuery.of(context).size.height / 21.333,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 64,
+                          ),
+                          ButtonTheme(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(
+                                    MediaQuery.of(context).size.width /
+                                        10.666)),
+                            minWidth: MediaQuery.of(context).size.width / 1.5,
+                            height: MediaQuery.of(context).size.height / 10.666,
+                            buttonColor: Colors.cyan,
+                            child: RaisedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HelpLine(),
+                                    ));
+                              },
+                              child: Text(
+                                'Helpline',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: MediaQuery.of(context).size.height /
+                                      21.333,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
                         ],
                       ),
                       SizedBox(

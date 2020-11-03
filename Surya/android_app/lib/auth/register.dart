@@ -28,7 +28,7 @@ class _HomeState extends State<Register> {
       gender,
       formDob = "Date of Birth",
       userid;
-  int aadharCardNo, mobileNo,age;
+  int aadharCardNo, mobileNo, age;
   List states = [
         'Andaman Nicobar',
         'Andhra Pradesh',
@@ -67,7 +67,8 @@ class _HomeState extends State<Register> {
         'Uttar Pradesh',
         'Uttarakhand',
         'West Bengal'
-      ],genders=['Male','Female','Other'],
+      ],
+      genders = ['Male', 'Female', 'Other'],
       districts = [];
 
   User temp;
@@ -146,16 +147,16 @@ class _HomeState extends State<Register> {
       List risk = [];
       fire.doc(userid).set({
         'name': name,
-        'age':age,
-        'gender':gender,
+        'age': age,
+        'gender': gender,
         'date_of_birth': dob,
         'mobile_no': mobileNo,
         'aadhar': aadharCardNo,
         'address_line': address1,
-        'city':city,
-        'district':district,
-        'state':state,
-        'final_address':address,
+        'city': city,
+        'district': district,
+        'state': state,
+        'final_address': address,
         'risk': risk,
       });
       return true;
@@ -846,7 +847,7 @@ class _HomeState extends State<Register> {
                       ),
                       ButtonTheme(
                         shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(
+                            borderRadius: BorderRadius.circular(
                                 MediaQuery.of(context).size.width / 10.666)),
                         minWidth: MediaQuery.of(context).size.width / 2.1333,
                         height: MediaQuery.of(context).size.height / 10.666,

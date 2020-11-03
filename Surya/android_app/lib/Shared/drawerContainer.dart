@@ -43,11 +43,11 @@ class DrawerC extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height/128,
+                  height: MediaQuery.of(context).size.height / 128,
                 ),
                 Center(
                   child: Text(
-                    age.toString()+" years",
+                    age.toString() + " years",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.height / 25.6,

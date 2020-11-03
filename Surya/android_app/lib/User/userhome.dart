@@ -1,5 +1,6 @@
 import 'package:android_app/Shared/drawerContainer.dart';
 import 'package:android_app/Shared/loadingscreen.dart';
+import 'package:android_app/User/quiz/quiz.dart';
 import 'package:android_app/User/stepOut/map.dart';
 import 'package:android_app/auth/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -97,7 +98,11 @@ class _HomeState extends State<UserHome> {
     if (ready) {
       return Scaffold(
         drawer: Drawer(
-          child: DrawerC(name: name, box: box,age: age,),
+          child: DrawerC(
+            name: name,
+            box: box,
+            age: age,
+          ),
         ),
         appBar: AppBar(
           backgroundColor: Colors.cyan,
@@ -150,7 +155,15 @@ class _HomeState extends State<UserHome> {
                           height: MediaQuery.of(context).size.height / 14,
                           buttonColor: Colors.cyan,
                           child: RaisedButton(
-                            onPressed: () async {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Quiz(
+                                            age: age,
+                                            gender: gender,
+                                          )));
+                            },
                             child: Text(
                               'Quiz',
                               style: TextStyle(
