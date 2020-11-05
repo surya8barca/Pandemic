@@ -50,8 +50,8 @@ class _HomeState extends State<UserHome> {
         });
       } else {
         setState(() {
-          riskDisplay = 'Your latest COVID-19 Risk Percentage: ' +
-              risk[-1].toString() +
+          riskDisplay = 'Your latest COVID-19 Risk Report: ' +
+              risk[(risk.length)-1].toString() +
               '\nTake the quiz for latest report';
         });
       }
@@ -164,6 +164,8 @@ class _HomeState extends State<UserHome> {
                                       builder: (context) => Quiz(
                                             age: age,
                                             gender: gender,
+                                            risk: risk,
+                                            userid:widget.userid,
                                           )));
                             },
                             child: Text(
