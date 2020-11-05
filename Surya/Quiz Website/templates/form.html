@@ -1,0 +1,150 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid Predictor</title>
+</head>
+<body>
+    <header>
+        <div id="headings">
+            <center>
+                <h1>Covid Prediction<br>by Machine Learning</h1>
+            </center>
+        </div>
+    </header>
+    <div id='form'>
+        <form method="GET" action="/predict" enctype="multipart/form-data">
+            <fieldset>
+                <center>
+                    <h1>Enter medical details</h1>
+                <label for="Breathing Problem">Do you have Breathing Problems ? </label><br>
+                <input type="radio"  id="yes" name="Breathing Problem" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Breathing Problem" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Fever">Do you have a Fever ? </label><br>
+                <input type="radio"  id="yes" name="Fever" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Fever" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Dry Cough">Do you have Dry Cough ? </label><br>
+                <input type="radio"  id="yes" name="Dry Cough" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Dry Cough" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Sore throat">Do you have Sore throat ? </label><br>
+                <input type="radio"  id="yes" name="Sore throat" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Sore throat" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Running Nose">Do you have a Running Nose ? </label><br>
+                <input type="radio"  id="yes" name="Running Nose" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Running Nose" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Asthma">Do you have Asthma? </label><br>
+                <input type="radio"  id="yes" name="Asthma" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Asthma" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Chronic Lung Disease">Do you have any chronic lung diseases ? </label><br>
+                <input type="radio"  id="yes" name="Chronic Lung Disease" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Chronic Lung Disease" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Headache">Have you experienced headaches recently? </label><br>
+                <input type="radio"  id="yes" name="Headache" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Headache" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Heart Disease">Do you have a heart disease ? </label><br>
+                <input type="radio"  id="yes" name="Heart Disease" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Heart Disease" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Diabetes">Do you have Diabetes ? </label><br>
+                <input type="radio"  id="yes" name="Diabetes" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Diabetes" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Hyper Tension">Do you see symtoms of Hyper Tension like chest pain, blood in urine, high blood pressure? </label><br>
+                <input type="radio"  id="yes" name="Hyper Tension" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Hyper Tension" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Fatigue">Have you recently felt fatigue ? </label><br>
+                <input type="radio"  id="yes" name="Fatigue" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Fatigue" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Gastrointestinal">Do you have any Gastrointestinal diseases? </label><br>
+                <input type="radio"  id="yes" name="Gastrointestinal" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Gastrointestinal" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Abroad travel">Have you recently come in contact with COVID Patient? </label><br>
+                <input type="radio"  id="yes" name="Abroad travel" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Abroad travel" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Contact with COVID Patient">Have you travelled abroad ? </label><br>
+                <input type="radio"  id="yes" name="Contact with COVID Patient" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Contact with COVID Patient" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Attended Large Gathering">Have you attended any large gathering recently? </label><br>
+                <input type="radio"  id="yes" name="Attended Large Gathering" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Attended Large Gathering" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Visited Public Exposed Places">Have you visited any exposed places recently ? </label><br>
+                <input type="radio"  id="yes" name="Visited Public Exposed Places" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Visited Public Exposed Places" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Family working in Public Exposed Places">Does any family member who lives with you works in an exposed place ? </label><br>
+                <input type="radio"  id="yes" name="Family working in Public Exposed Places" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Family working in Public Exposed Places" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Wearing Masks">Were you always wereing masks while going outside ? </label><br>
+                <input type="radio"  id="yes" name="Wearing Masks" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Wearing Masks" value=0 required>
+                <label for="no">NO</label><br>
+
+                <label for="Sanitization from Market">Did you visit take proper steps to sanitize yourself after going outside ? </label><br>
+                <input type="radio"  id="yes" name="Sanitization from Market" value=1 required>
+                  <label for="yes">YES</label>
+                <input type="radio"  id="no" name="Sanitization from Market" value=0 required>
+                <label for="no">NO</label><br>
+
+                <center>
+                    <input type="submit" value="Predict"></button>
+                </center>
+            </center>
+            </fieldset>
+        </form>
+    </div>
+</body>
+
+</html>
