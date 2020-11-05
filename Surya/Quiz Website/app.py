@@ -27,7 +27,7 @@ def predict():
     if(value[0]==0):
         prediction="Low Risk"
     else:
-        prediction="Hish Risk"
+        prediction="High Risk"
     return jsonify({'prediction':prediction}) 
 
 
