@@ -15,13 +15,16 @@ class _HomeState extends State<Stats> {
   Map info;
   Map global;
   Map india;
+  Map stateData = {'confirmed': 0, 'recovered': 0, 'deaths': 0};
   Map otherCountry = {
     'TotalConfirmed': 0,
     'TotalRecovered': 0,
     'TotalDeaths': 0
   };
-  String country;
+  String country, state;
   List countries = [];
+  List states = [];
+  List statesData = [];
 
   void countrydata() {
     List all = info['Countries'];
@@ -35,9 +38,19 @@ class _HomeState extends State<Stats> {
     }
   }
 
+  void statedata() {
+    for (int i = 0; i < statesData.length; i++) {
+      if (statesData[i]['state'] == state) {
+        setState(() {
+          stateData = statesData[i];
+        });
+      }
+    }
+  }
+
   Future<void> getdata() async {
     try {
-      final result = await get("https://api.covid19api.com/summary");
+      Response result = await get("https://api.covid19api.com/summary");
       Map output = jsonDecode(result.body);
       setState(() {
         info = output;
@@ -53,10 +66,20 @@ class _HomeState extends State<Stats> {
       }
       setState(() {
         global = info['Global'];
+      });
+      Response result2 =
+          await get("https://covid-19india-api.herokuapp.com/v2.0/state_data");
+      dynamic data = jsonDecode(result2.body);
+      setState(() {
+        statesData = data[1]['state_data'];
+      });
+      for (int i = 0; i < statesData.length; i++) {
+        states.add(statesData[i]['state']);
+      }
+      setState(() {
         loading = false;
       });
     } catch (e) {
-      Navigator.pop(context);
       Alert(
               context: context,
               title: 'Error Loading data',
@@ -66,6 +89,8 @@ class _HomeState extends State<Stats> {
                   AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
           .show();
       await Future.delayed(Duration(seconds: 3));
+      Navigator.pop(context);
+      Navigator.pop(context);
     }
   }
 
@@ -251,6 +276,170 @@ class _HomeState extends State<Stats> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
+                                'Statistics of various States of India?',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 24,
+                                ),
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 64,
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(
+                                    MediaQuery.of(context).size.width / 64),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.blue,
+                                      width: MediaQuery.of(context).size.width /
+                                          160),
+                                  borderRadius: BorderRadius.circular(
+                                      MediaQuery.of(context).size.width / 12.8),
+                                  color: Colors.white,
+                                ),
+                                child: DropdownButton(
+                                  iconEnabledColor: Colors.blue,
+                                  underline: Container(),
+                                  hint: Text(
+                                    'Select State:',
+                                    style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.height /
+                                              25.6,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  isExpanded: true,
+                                  items: states
+                                      .map<DropdownMenuItem<String>>((value) {
+                                    return DropdownMenuItem<String>(
+                                      child: Container(
+                                        padding: EdgeInsets.all(
+                                            MediaQuery.of(context).size.width /
+                                                64),
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                10.66,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.blue,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  160),
+                                          borderRadius: BorderRadius.circular(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  32),
+                                          color: Colors.white,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              value,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height /
+                                                          48,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.blue),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      value: value,
+                                    );
+                                  }).toList(),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  onChanged: (chosen) {
+                                    setState(() {
+                                      state = chosen;
+                                    });
+                                    statedata();
+                                  },
+                                  value: state,
+                                ),
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 64,
+                              ),
+                              Text(
+                                'Confirmed: ' +
+                                    stateData['confirmed'].toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Recovered: ' +
+                                    stateData['recovered'].toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                'Deaths: ' + stateData['deaths'].toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height / 128,
+                              ),
+                              Text(
+                                'Current: ' +
+                                    (stateData['confirmed'] -
+                                            stateData['recovered'] -
+                                            stateData['deaths'])
+                                        .toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 32,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(
+                              MediaQuery.of(context).size.width / 50),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
                                 'Statistics of another country?',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -402,9 +591,6 @@ class _HomeState extends State<Stats> {
                                       MediaQuery.of(context).size.height / 24,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              ),
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height / 32,
                               ),
                             ],
                           ),
