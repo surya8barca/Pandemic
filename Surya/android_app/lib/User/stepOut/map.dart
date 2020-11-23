@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,8 +9,8 @@ import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class MapHome extends StatefulWidget {
-  final String name;
-  MapHome({this.name});
+  final String userid;
+  MapHome({this.userid});
   @override
   _HomeState createState() => _HomeState();
 }
@@ -51,8 +52,10 @@ class _HomeState extends State<MapHome> {
                   bearing: 192.8334901395799,
                   target: LatLng(newLocalData.latitude, newLocalData.longitude),
                   tilt: 0,
-                  zoom: 18)));
+                  zoom: 15)));
           updateMarkerCircle(newLocalData, imageData);
+          updateLocationdatabase(newLocalData);
+          //
         }
       });
     } catch (e) {
@@ -71,7 +74,7 @@ class _HomeState extends State<MapHome> {
 
   void updateMarkerCircle(LocationData newLocalData, Uint8List imageData) {
     LatLng latlng = LatLng(newLocalData.latitude, newLocalData.longitude);
-    this.setState(() {
+    setState(() {
       marker = Marker(
           markerId: MarkerId("Home"),
           position: latlng,
@@ -81,14 +84,30 @@ class _HomeState extends State<MapHome> {
           flat: false,
           anchor: Offset(0.5, 0.5),
           icon: BitmapDescriptor.fromBytes(imageData));
+
       circle = Circle(
-          circleId: CircleId(widget.name),
+          circleId: CircleId(widget.userid),
           radius: newLocalData.accuracy,
           zIndex: 1,
           strokeColor: Colors.blue,
           center: latlng,
           fillColor: Colors.blue.withAlpha(70));
     });
+  }
+
+  final CollectionReference location =
+      FirebaseFirestore.instance.collection('Locations');
+
+  Future<void> updateLocationdatabase(LocationData current) async {
+    try {
+      location.doc(widget.userid).update(
+        {
+          'location':GeoPoint(current.latitude, current.longitude),
+        }
+      );
+    } catch (e) {
+      print(e.message);
+    }
   }
 
   @override

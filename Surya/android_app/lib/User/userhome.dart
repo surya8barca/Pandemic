@@ -194,7 +194,7 @@ class _HomeState extends State<UserHome> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          MapHome(name: name)));
+                                          MapHome(userid: widget.userid)));
                             },
                             child: Text(
                               'Step Out',

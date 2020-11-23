@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -74,6 +75,8 @@ class _HomeState extends State<Register> {
   User temp;
   final CollectionReference fire =
       FirebaseFirestore.instance.collection('UserData');
+  final CollectionReference location =
+      FirebaseFirestore.instance.collection('Locations');
 
   Future<void> getdistricts() async {
     try {
@@ -140,6 +143,8 @@ class _HomeState extends State<Register> {
     }
   }
 
+  GeoPoint current;
+
   Future<bool> adddetails() async {
     try {
       String address =
@@ -159,6 +164,11 @@ class _HomeState extends State<Register> {
         'final_address': address,
         'risk': risk,
       });
+      location.doc(userid).set(
+        {
+          'location': current,
+        }
+      );
       return true;
     } catch (e) {
       Navigator.pop(context);
