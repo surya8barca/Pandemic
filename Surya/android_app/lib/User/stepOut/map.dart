@@ -45,7 +45,7 @@ class _HomeState extends State<MapHome> {
       }
 
       _locationSubscription =
-          _locationTracker.onLocationChanged.listen((newLocalData) {
+          _locationTracker.onLocationChanged.listen((newLocalData) async{
         if (_controller != null) {
           _controller.animateCamera(CameraUpdate.newCameraPosition(
               new CameraPosition(
@@ -54,7 +54,7 @@ class _HomeState extends State<MapHome> {
                   tilt: 0,
                   zoom: 15)));
           updateMarkerCircle(newLocalData, imageData);
-          updateLocationdatabase(newLocalData);
+          await updateLocationdatabase(newLocalData);
           //
         }
       });

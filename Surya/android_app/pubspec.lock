@@ -345,6 +345,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  geofence:
+    dependency: "direct main"
+    description:
+      name: geofence
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   glob:
     dependency: transitive
     description:

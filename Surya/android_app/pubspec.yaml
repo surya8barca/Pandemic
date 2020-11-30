@@ -43,6 +43,7 @@ dependencies:
   google_maps_flutter:
   location:
   flutter_plugin_pdf_viewer:
+  geofence:
 
 dev_dependencies:
   flutter_test:

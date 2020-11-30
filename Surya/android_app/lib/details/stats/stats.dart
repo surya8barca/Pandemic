@@ -67,7 +67,7 @@ class _HomeState extends State<Stats> {
       setState(() {
         global = info['Global'];
       });
-      Response result2 =
+      /*Response result2 =
           await get("https://covid-19india-api.herokuapp.com/v2.0/state_data");
       dynamic data = jsonDecode(result2.body);
       setState(() {
@@ -75,7 +75,7 @@ class _HomeState extends State<Stats> {
       });
       for (int i = 0; i < statesData.length; i++) {
         states.add(statesData[i]['state']);
-      }
+      }*/
       setState(() {
         loading = false;
       });
@@ -269,7 +269,7 @@ class _HomeState extends State<Stats> {
                         SizedBox(
                           height: MediaQuery.of(context).size.height / 64,
                         ),
-                        Padding(
+                        /*Padding(
                           padding: EdgeInsets.all(
                               MediaQuery.of(context).size.width / 50),
                           child: Column(
@@ -432,7 +432,7 @@ class _HomeState extends State<Stats> {
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height / 32,
-                        ),
+                        ),*/
                         Padding(
                           padding: EdgeInsets.all(
                               MediaQuery.of(context).size.width / 50),
