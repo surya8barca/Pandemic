@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:vector_math/vector_math.dart' hide Colors;
+
 
 class MapHome extends StatefulWidget {
   final String userid;
@@ -45,7 +47,7 @@ class _HomeState extends State<MapHome> {
       }
 
       _locationSubscription =
-          _locationTracker.onLocationChanged.listen((newLocalData) async{
+          _locationTracker.onLocationChanged.listen((newLocalData) async {
         if (_controller != null) {
           _controller.animateCamera(CameraUpdate.newCameraPosition(
               new CameraPosition(
@@ -55,7 +57,7 @@ class _HomeState extends State<MapHome> {
                   zoom: 15)));
           updateMarkerCircle(newLocalData, imageData);
           await updateLocationdatabase(newLocalData);
-          //
+          await calculateDistance(newLocalData);
         }
       });
     } catch (e) {
@@ -100,11 +102,46 @@ class _HomeState extends State<MapHome> {
 
   Future<void> updateLocationdatabase(LocationData current) async {
     try {
-      location.doc(widget.userid).update(
-        {
-          'location':GeoPoint(current.latitude, current.longitude),
+      location.doc(widget.userid).update({
+        'location': GeoPoint(current.latitude, current.longitude),
+      });
+    } catch (e) {
+      print(e.message);
+    }
+  }
+
+  double distance(double lat1, double lat2, double long1, double long2) {
+    
+    lat1 = radians(lat1);
+    lat2 = radians(lat2);
+    long1 = radians(long1);
+    long2 = radians(long2);
+    double dlong = long2 - long1;
+    double dlat = lat2 - lat1;
+    double ans =
+        pow(sin(dlat / 2), 2) + cos(lat1) * cos(lat2) * pow(sin(dlong / 2), 2);
+    ans = 2 * asin(sqrt(ans));
+    double R = 6371000;
+    ans = ans * R;
+    return ans;
+  }
+
+  Future<void> calculateDistance(LocationData current) async {
+    try {
+      QuerySnapshot result = await location.get();
+      List alldata = result.docs;
+      for (int i = 0; i < alldata.length; i++) {
+        QueryDocumentSnapshot value = alldata[i];
+        if (value.id != widget.userid) {
+          String thisid = value.id;
+          print(thisid);
+          Map thisdata = value.data();
+          GeoPoint thisloc = thisdata["location"];
+          double thisdistance = distance(current.latitude, thisloc.latitude,
+              current.longitude, thisloc.longitude);
+          print(thisdistance);
         }
-      );
+      }
     } catch (e) {
       print(e.message);
     }
