@@ -16,7 +16,7 @@ class Login extends StatefulWidget {
 class _HomeState extends State<Login> {
   //variables
   bool hidepassword = true, rememberme = false;
-  String email, password, userid;
+  String email, password, userid, fEmail;
 
   final box = Hive.box('currentuser');
 
@@ -43,6 +43,27 @@ class _HomeState extends State<Login> {
       if (box.length != 0) {
         box.deleteAt(0);
       }
+      Navigator.pop(context);
+      return false;
+    }
+  }
+
+  Future<bool> sendPasswordChangeEmail() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: fEmail);
+      return true;
+    } catch (e) {
+      Alert(
+              context: context,
+              title: 'Error',
+              desc: e.message,
+              buttons: [],
+              style: AlertStyle(
+                  backgroundColor: Colors.cyan,
+                  isCloseButton: false,
+                  isOverlayTapDismiss: false))
+          .show();
+      await Future.delayed(Duration(seconds: 5));
       Navigator.pop(context);
       return false;
     }
@@ -214,6 +235,192 @@ class _HomeState extends State<Login> {
                             ),
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 64,
+                      ),
+                      InkWell(
+                        child: Text(
+                          'Forgot Password',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                            fontSize: MediaQuery.of(context).size.height / 32,
+                          ),
+                        ),
+                        onTap: () {
+                          Alert(
+                            title: 'Forgot Password',
+                            context: context,
+                            buttons: [],
+                            style: AlertStyle(
+                                isCloseButton: false,
+                                isOverlayTapDismiss: false,
+                                backgroundColor: Colors.transparent,
+                                titleStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 32,
+                                )),
+                            content: Container(
+                              padding: EdgeInsets.all(
+                                  MediaQuery.of(context).size.height / 128),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.lightBlue,
+                                  width:
+                                      MediaQuery.of(context).size.width / 256,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  MediaQuery.of(context).size.height / 64,
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height /
+                                        128,
+                                  ),
+                                  Text(
+                                    'Enter your Email Address',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      decoration: TextDecoration.underline,
+                                      fontSize:
+                                          MediaQuery.of(context).size.height /
+                                              32,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height / 32,
+                                  ),
+                                  TextFormField(
+                                    textInputAction: TextInputAction.done,
+                                    decoration: fieldDecoration.copyWith(
+                                        labelText: 'Email Id'),
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                32),
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          fEmail = value;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height / 32,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      ButtonTheme(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    32)),
+                                        buttonColor: Colors.lightBlueAccent,
+                                        child: RaisedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'Cancel',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  32,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      ButtonTheme(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        buttonColor: Colors.lightBlueAccent,
+                                        child: RaisedButton(
+                                          onPressed: () async {
+                                            if (fEmail != null) {
+                                              bool status =
+                                                  await sendPasswordChangeEmail();
+                                              if (status) {
+                                                Alert(
+                                                        context: context,
+                                                        title: 'Email Sent',
+                                                        desc:
+                                                            'A link has been sent on $fEmail to reset your password',
+                                                        buttons: [],
+                                                        style: AlertStyle(
+                                                            backgroundColor:
+                                                                Colors.cyan,
+                                                            isCloseButton:
+                                                                false,
+                                                            isOverlayTapDismiss:
+                                                                false))
+                                                    .show();
+                                                await Future.delayed(
+                                                    Duration(seconds: 5));
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                              } else {
+                                                Navigator.pop(context);
+                                              }
+                                            } else {
+                                              Alert(
+                                                      context: context,
+                                                      title: 'Invalid Input',
+                                                      desc:
+                                                          'All inputs are required and in correct format',
+                                                      buttons: [],
+                                                      style: AlertStyle(
+                                                          backgroundColor:
+                                                              Colors.cyan,
+                                                          isCloseButton: false,
+                                                          isOverlayTapDismiss:
+                                                              false))
+                                                  .show();
+                                              await Future.delayed(
+                                                  Duration(seconds: 3));
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                          child: Text(
+                                            'Submit',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  32,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ).show();
+                        },
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 32,
