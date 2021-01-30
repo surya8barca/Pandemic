@@ -9,7 +9,6 @@ import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:vector_math/vector_math.dart' hide Colors;
 
-
 class MapHome extends StatefulWidget {
   final String userid;
   MapHome({this.userid});
@@ -111,7 +110,6 @@ class _HomeState extends State<MapHome> {
   }
 
   double distance(double lat1, double lat2, double long1, double long2) {
-    
     lat1 = radians(lat1);
     lat2 = radians(lat2);
     long1 = radians(long1);
@@ -126,22 +124,33 @@ class _HomeState extends State<MapHome> {
     return ans;
   }
 
+  final CollectionReference neighbour =
+      FirebaseFirestore.instance.collection('Contacted People');
+
   Future<void> calculateDistance(LocationData current) async {
     try {
       QuerySnapshot result = await location.get();
       List alldata = result.docs;
+      DocumentSnapshot userpeopledata = await neighbour.doc(widget.userid).get();
+      List userpeople = userpeopledata.data()['Contacted_People'];
       for (int i = 0; i < alldata.length; i++) {
         QueryDocumentSnapshot value = alldata[i];
         if (value.id != widget.userid) {
           String thisid = value.id;
-          print(thisid);
           Map thisdata = value.data();
           GeoPoint thisloc = thisdata["location"];
           double thisdistance = distance(current.latitude, thisloc.latitude,
               current.longitude, thisloc.longitude);
-          print(thisdistance);
+          if (thisdistance <= 20) {
+            if (!(userpeople.contains(thisid))) {
+              userpeople.add(thisid);
+            }
+          }
         }
       }
+      neighbour.doc(widget.userid).update({
+        'Contacted_People': userpeople,
+      });
     } catch (e) {
       print(e.message);
     }

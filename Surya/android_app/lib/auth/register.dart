@@ -145,11 +145,15 @@ class _HomeState extends State<Register> {
 
   GeoPoint current;
 
+  final CollectionReference neighbour =
+      FirebaseFirestore.instance.collection('Contacted People');
+
   Future<bool> adddetails() async {
     try {
       String address =
           (address1 + ", " + city + ", " + district + ", " + state);
       List risk = [];
+      List neighbours = [];
       fire.doc(userid).set({
         'name': name,
         'age': age,
@@ -164,11 +168,12 @@ class _HomeState extends State<Register> {
         'final_address': address,
         'risk': risk,
       });
-      location.doc(userid).set(
-        {
-          'location': current,
-        }
-      );
+      location.doc(userid).set({
+        'location': current,
+      });
+      neighbour.doc(userid).set({
+        'Contacted_People': neighbours,
+      });
       return true;
     } catch (e) {
       Navigator.pop(context);
