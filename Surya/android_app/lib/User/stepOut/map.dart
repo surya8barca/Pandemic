@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,11 +23,13 @@ class _HomeState extends State<MapHome> {
   Location _locationTracker = Location();
   Marker marker;
   Circle circle;
+  List<Marker> markers = [];
+  List<Circle> circles = [];
   GoogleMapController _controller;
 
   static final CameraPosition initialLocation = CameraPosition(
-    target: LatLng(19.076090, 72.877426),
-    zoom: 15,
+    target: LatLng(20.5937, 78.9629),
+    zoom: 5,
   );
 
   Future<Uint8List> getMarker() async {
@@ -54,8 +58,8 @@ class _HomeState extends State<MapHome> {
                   target: LatLng(newLocalData.latitude, newLocalData.longitude),
                   tilt: 0,
                   zoom: 15)));
-          updateMarkerCircle(newLocalData, imageData);
           await updateLocationdatabase(newLocalData);
+          await initialiseMarkersAnCircles();
           await calculateDistance(newLocalData);
         }
       });
@@ -73,11 +77,12 @@ class _HomeState extends State<MapHome> {
     }
   }
 
-  void updateMarkerCircle(LocationData newLocalData, Uint8List imageData) {
+  Future<void> updateMarkerCircle(
+      LocationData newLocalData, Uint8List imageData) {
     LatLng latlng = LatLng(newLocalData.latitude, newLocalData.longitude);
     setState(() {
       marker = Marker(
-          markerId: MarkerId("Home"),
+          markerId: MarkerId("${widget.userid}"),
           position: latlng,
           rotation: newLocalData.heading,
           draggable: false,
@@ -94,6 +99,7 @@ class _HomeState extends State<MapHome> {
           center: latlng,
           fillColor: Colors.blue.withAlpha(70));
     });
+    return null;
   }
 
   final CollectionReference location =
@@ -131,7 +137,8 @@ class _HomeState extends State<MapHome> {
     try {
       QuerySnapshot result = await location.get();
       List alldata = result.docs;
-      DocumentSnapshot userpeopledata = await neighbour.doc(widget.userid).get();
+      DocumentSnapshot userpeopledata =
+          await neighbour.doc(widget.userid).get();
       List userpeople = userpeopledata.data()['Contacted_People'];
       for (int i = 0; i < alldata.length; i++) {
         QueryDocumentSnapshot value = alldata[i];
@@ -141,7 +148,7 @@ class _HomeState extends State<MapHome> {
           GeoPoint thisloc = thisdata["location"];
           double thisdistance = distance(current.latitude, thisloc.latitude,
               current.longitude, thisloc.longitude);
-          if (thisdistance <= 20) {
+          if (thisdistance <= 100) {
             if (!(userpeople.contains(thisid))) {
               userpeople.add(thisid);
             }
@@ -154,6 +161,79 @@ class _HomeState extends State<MapHome> {
     } catch (e) {
       print(e.message);
     }
+  }
+
+  Future<void> initialiseMarkersAnCircles() async {
+    try {
+      QuerySnapshot result = await location.get();
+      List alldata = result.docs;
+      if (markers.length >= alldata.length) {
+        markers.removeRange(0, markers.length);
+        circles.removeRange(0, circles.length);
+      }
+      for (int i = 0; i < alldata.length; i++) {
+        QueryDocumentSnapshot value = alldata[i];
+        String thisid = value.id;
+        Map thisdata = value.data();
+        GeoPoint thisloc = thisdata["location"];
+        if (thisid == widget.userid) {
+          Uint8List imageData = await getMarker();
+          markers.add(Marker(
+            icon: BitmapDescriptor.fromBytes(imageData),
+            markerId: MarkerId(thisid),
+            position: LatLng(thisloc.latitude, thisloc.longitude),
+            draggable: false,
+            zIndex: 2,
+            flat: false,
+            anchor: Offset(0.5, 0.5),
+          ));
+          circles.add(Circle(
+            circleId: CircleId(thisid),
+            radius: 500,
+            zIndex: 1,
+            strokeColor: Colors.blue,
+            center: LatLng(thisloc.latitude, thisloc.longitude),
+            fillColor: Colors.blue.withAlpha(70),
+          ));
+        } else {
+          DocumentSnapshot data = await FirebaseFirestore.instance
+              .collection('UserData')
+              .doc(thisid)
+              .get();
+          Color circleColor = Colors.green;
+          List userData = data.data()["risk"];
+          if (userData.length != 0 && userData[0] == "High Risk") {
+            setState(() {
+              circleColor = Colors.red;
+            });
+          }
+          markers.add(Marker(
+            markerId: MarkerId(thisid),
+            position: LatLng(thisloc.latitude, thisloc.longitude),
+            draggable: false,
+            zIndex: 2,
+            flat: false,
+            anchor: Offset(0.5, 0.5),
+          ));
+          circles.add(Circle(
+            circleId: CircleId(thisid),
+            radius: 500,
+            zIndex: 1,
+            strokeColor: circleColor,
+            center: LatLng(thisloc.latitude, thisloc.longitude),
+            fillColor: circleColor.withAlpha(70),
+          ));
+        }
+      }
+    } catch (e) {
+      print(e.message);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initialiseMarkersAnCircles();
   }
 
   @override
@@ -197,15 +277,27 @@ class _HomeState extends State<MapHome> {
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   child: GoogleMap(
-                    mapType: MapType.normal,
-                    initialCameraPosition: initialLocation,
-                    markers: Set.of((marker != null) ? [marker] : []),
-                    circles: Set.of((circle != null) ? [circle] : []),
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller = controller;
-                    },
-                    compassEnabled: true,
-                  ),
+                      mapType: MapType.normal,
+                      initialCameraPosition: initialLocation,
+                      /*markers: Set.of((marker != null) ? [marker] : markers),
+                      circles: Set.of((circle != null) ? [circle] : circles),*/
+                      markers: Set.of(markers),
+                      circles: Set.of(circles),
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller = controller;
+                      },
+                      compassEnabled: true,
+                      gestureRecognizers: Set()
+                        ..add(Factory<PanGestureRecognizer>(
+                            () => PanGestureRecognizer()))
+                        ..add(Factory<ScaleGestureRecognizer>(
+                            () => ScaleGestureRecognizer()))
+                        ..add(Factory<VerticalDragGestureRecognizer>(
+                            () => VerticalDragGestureRecognizer()))
+                        ..add(Factory<HorizontalDragGestureRecognizer>(
+                            () => HorizontalDragGestureRecognizer()))
+                        ..add(Factory<EagerGestureRecognizer>(
+                            () => EagerGestureRecognizer()))),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 32,
