@@ -44,6 +44,7 @@ dependencies:
   location:
   flutter_plugin_pdf_viewer:
   vector_math:
+  flutter_email_sender:
 # geofence:
 
 dev_dependencies:

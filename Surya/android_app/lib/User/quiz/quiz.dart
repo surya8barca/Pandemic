@@ -97,17 +97,15 @@ class _HomeState extends State<Quiz> {
       newrisk.add(result['prediction']);
       CollectionReference fire =
           FirebaseFirestore.instance.collection('UserData');
-      fire.doc(widget.userid).update(
-        {
-          "risk":newrisk,
-        }
-      );
+      fire.doc(widget.userid).update({
+        "risk": newrisk,
+      });
     } catch (e) {
       Navigator.pop(context);
       Alert(
               context: context,
               title: 'Error',
-              desc: e.message,
+              desc: e.toString(),
               buttons: [],
               style:
                   AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
@@ -2081,7 +2079,7 @@ class _HomeState extends State<Quiz> {
                             minWidth: MediaQuery.of(context).size.width / 3,
                             height: MediaQuery.of(context).size.height / 10.666,
                             buttonColor: Colors.cyan,
-                            child: RaisedButton(
+                            child: ElevatedButton(
                               onPressed: () async {
                                 if (check()) {
                                   Alert(
@@ -2139,7 +2137,7 @@ class _HomeState extends State<Quiz> {
                             minWidth: MediaQuery.of(context).size.width / 3,
                             height: MediaQuery.of(context).size.height / 10.666,
                             buttonColor: Colors.cyan,
-                            child: RaisedButton(
+                            child: ElevatedButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },

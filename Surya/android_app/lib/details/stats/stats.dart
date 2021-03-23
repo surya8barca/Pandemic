@@ -83,7 +83,7 @@ class _HomeState extends State<Stats> {
       Alert(
               context: context,
               title: 'Error Loading data',
-              desc: e.message,
+              desc: e.toString(),
               buttons: [],
               style:
                   AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))

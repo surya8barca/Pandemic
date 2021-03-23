@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -92,7 +93,7 @@ class _HomeState extends State<Register> {
       Alert(
               context: context,
               title: 'Error',
-              desc: e.message,
+              desc: e.toString(),
               buttons: [],
               style:
                   AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
@@ -133,7 +134,7 @@ class _HomeState extends State<Register> {
       Alert(
               context: context,
               title: 'Registration Error',
-              desc: e.message,
+              desc: e.toString(),
               buttons: [],
               style:
                   AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
@@ -155,6 +156,7 @@ class _HomeState extends State<Register> {
       List risk = [];
       List neighbours = [];
       fire.doc(userid).set({
+        'email':email,
         'name': name,
         'age': age,
         'gender': gender,
@@ -180,7 +182,7 @@ class _HomeState extends State<Register> {
       Alert(
               context: context,
               title: 'Registration Error',
-              desc: e.message,
+              desc: e.toString(),
               buttons: [],
               style:
                   AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
@@ -762,7 +764,7 @@ class _HomeState extends State<Register> {
                         minWidth: MediaQuery.of(context).size.width / 2.1333,
                         height: MediaQuery.of(context).size.height / 10.666,
                         buttonColor: Colors.cyan,
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () async {
                             Alert(
                                 context: context,
@@ -867,7 +869,7 @@ class _HomeState extends State<Register> {
                         minWidth: MediaQuery.of(context).size.width / 2.1333,
                         height: MediaQuery.of(context).size.height / 10.666,
                         buttonColor: Colors.blue,
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushReplacement(
                                 context,

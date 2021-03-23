@@ -67,7 +67,7 @@ class _HomeState extends State<MapHome> {
       Alert(
               context: context,
               title: 'Location Error',
-              desc: e.message,
+              desc: e.toString(),
               buttons: [],
               style:
                   AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
@@ -111,7 +111,7 @@ class _HomeState extends State<MapHome> {
         'location': GeoPoint(current.latitude, current.longitude),
       });
     } catch (e) {
-      print(e.message);
+      print(e.toString());
     }
   }
 
@@ -159,7 +159,7 @@ class _HomeState extends State<MapHome> {
         'Contacted_People': userpeople,
       });
     } catch (e) {
-      print(e.message);
+      print(e.toString());
     }
   }
 
@@ -176,6 +176,7 @@ class _HomeState extends State<MapHome> {
         String thisid = value.id;
         Map thisdata = value.data();
         GeoPoint thisloc = thisdata["location"];
+        if(thisloc!=null){
         if (thisid == widget.userid) {
           Uint8List imageData = await getMarker();
           markers.add(Marker(
@@ -195,7 +196,7 @@ class _HomeState extends State<MapHome> {
             center: LatLng(thisloc.latitude, thisloc.longitude),
             fillColor: Colors.blue.withAlpha(70),
           ));
-        } else {
+                  } else {
           DocumentSnapshot data = await FirebaseFirestore.instance
               .collection('UserData')
               .doc(thisid)
@@ -225,15 +226,16 @@ class _HomeState extends State<MapHome> {
           ));
         }
       }
+      }
     } catch (e) {
-      print(e.message);
+      print(e.toString());
     }
   }
 
   @override
   void initState() {
-    super.initState();
     initialiseMarkersAnCircles();
+    super.initState();
   }
 
   @override

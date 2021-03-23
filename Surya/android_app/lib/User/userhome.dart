@@ -51,7 +51,7 @@ class _HomeState extends State<UserHome> {
       } else {
         setState(() {
           riskDisplay = 'Your latest COVID-19 Risk Report: ' +
-              risk[(risk.length)-1].toString() +
+              risk[(risk.length) - 1].toString() +
               '\nTake the quiz for latest report';
         });
       }
@@ -59,7 +59,7 @@ class _HomeState extends State<UserHome> {
       Alert(
               context: context,
               title: 'Database Error',
-              desc: e.message,
+              desc: e.toString(),
               buttons: [],
               style:
                   AlertStyle(isCloseButton: false, isOverlayTapDismiss: false))
@@ -92,8 +92,9 @@ class _HomeState extends State<UserHome> {
 
   @override
   void initState() {
-    super.initState();
     getdata();
+    super.initState();
+    
   }
 
   @override
@@ -105,6 +106,7 @@ class _HomeState extends State<UserHome> {
             name: name,
             box: box,
             age: age,
+            userid: widget.userid,
           ),
         ),
         appBar: AppBar(
@@ -156,7 +158,7 @@ class _HomeState extends State<UserHome> {
                           minWidth: MediaQuery.of(context).size.width / 3,
                           height: MediaQuery.of(context).size.height / 14,
                           buttonColor: Colors.cyan,
-                          child: RaisedButton(
+                          child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -165,7 +167,7 @@ class _HomeState extends State<UserHome> {
                                             age: age,
                                             gender: gender,
                                             risk: risk,
-                                            userid:widget.userid,
+                                            userid: widget.userid,
                                           )));
                             },
                             child: Text(
@@ -188,7 +190,7 @@ class _HomeState extends State<UserHome> {
                           minWidth: MediaQuery.of(context).size.width / 3,
                           height: MediaQuery.of(context).size.height / 14,
                           buttonColor: Colors.cyan,
-                          child: RaisedButton(
+                          child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -244,7 +246,7 @@ class _HomeState extends State<UserHome> {
                         minWidth: MediaQuery.of(context).size.width / 1.5,
                         height: MediaQuery.of(context).size.height / 10,
                         buttonColor: Colors.cyan,
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -275,7 +277,7 @@ class _HomeState extends State<UserHome> {
                             minWidth: MediaQuery.of(context).size.width / 3,
                             height: MediaQuery.of(context).size.height / 10,
                             buttonColor: Colors.cyan,
-                            child: RaisedButton(
+                            child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -304,7 +306,7 @@ class _HomeState extends State<UserHome> {
                             minWidth: MediaQuery.of(context).size.width / 3,
                             height: MediaQuery.of(context).size.height / 10,
                             buttonColor: Colors.cyan,
-                            child: RaisedButton(
+                            child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
                                     context,

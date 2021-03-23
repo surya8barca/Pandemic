@@ -36,7 +36,7 @@ class _HomeState extends State<Login> {
       Alert(
           context: context,
           title: 'Login Error',
-          desc: e.message,
+          desc: e.toString(),
           style: AlertStyle(isCloseButton: false, isOverlayTapDismiss: false),
           buttons: []).show();
       await Future.delayed(Duration(seconds: 3));
@@ -56,7 +56,7 @@ class _HomeState extends State<Login> {
       Alert(
               context: context,
               title: 'Error',
-              desc: e.message,
+              desc: e.toString(),
               buttons: [],
               style: AlertStyle(
                   backgroundColor: Colors.cyan,
@@ -201,7 +201,7 @@ class _HomeState extends State<Login> {
                         minWidth: MediaQuery.of(context).size.width / 2.1333,
                         height: MediaQuery.of(context).size.height / 10.666,
                         buttonColor: Colors.cyan,
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () async {
                             Alert(
                                 context: context,
@@ -331,7 +331,7 @@ class _HomeState extends State<Login> {
                                                         .height /
                                                     32)),
                                         buttonColor: Colors.lightBlueAccent,
-                                        child: RaisedButton(
+                                        child: ElevatedButton(
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
@@ -354,7 +354,7 @@ class _HomeState extends State<Login> {
                                             borderRadius:
                                                 BorderRadius.circular(20)),
                                         buttonColor: Colors.lightBlueAccent,
-                                        child: RaisedButton(
+                                        child: ElevatedButton(
                                           onPressed: () async {
                                             if (fEmail != null) {
                                               bool status =
@@ -454,7 +454,7 @@ class _HomeState extends State<Login> {
                         minWidth: MediaQuery.of(context).size.width / 2.1333,
                         height: MediaQuery.of(context).size.height / 10.666,
                         buttonColor: Colors.blue,
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushReplacement(
                                 context,
