@@ -2,7 +2,7 @@ import 'package:android_app/auth/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive/hive.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -26,14 +26,6 @@ class DrawerC extends StatefulWidget {
 }
 
 class _DrawerCState extends State<DrawerC> {
-  List emailids = [];
-  Email email = Email(
-    body:
-        'Hello, I am a pandemic user. I have recently been in contact with u and I would like to alert you as I have been tested positive in my COVID-19 test and I would suggest you to take your test too',
-    subject: 'Risk of COVID-19',
-    isHTML: false,
-  );
-
   final CollectionReference contactedPeople =
       FirebaseFirestore.instance.collection('Contacted People');
   final CollectionReference userdata =
@@ -56,20 +48,19 @@ class _DrawerCState extends State<DrawerC> {
     }
   }
 
-  Future<bool> sendEmail(List ids) async {
+  Future<bool> sendAlert(List ids) async {
     try {
-      List<String> emailids = [];
+      List<String> mobileNos = [];
       for (int i = 0; i < ids.length; i++) {
         DocumentSnapshot data = await userdata.doc(ids[i]).get();
-        emailids.add(data.data()['email']);
+        mobileNos.add(data.data()['mobile_no'].toString());
       }
-      Email email = Email(        body:
-            'Hello, I am a Pandemic user. I have recently been in contact with u and I would like to alert you as I have been tested positive in my COVID-19 test and I would suggest you to take your test too',
-        subject: 'Risk of COVID-19',
-        recipients: emailids,
-        isHTML: false,
-      );
-      await FlutterEmailSender.send(email);
+
+      String text =
+          "Hello, I am a Pandemic user. I have recently been in contact with u and I would like to alert you as I have been tested positive in my COVID-19 test and I would suggest you to take your test too";
+
+      await sendSMS(message: text, recipients: mobileNos);
+      await Future.delayed(Duration(seconds: 30));
       return true;
     } catch (e) {
       print(e.toString());
@@ -260,7 +251,7 @@ class _DrawerCState extends State<DrawerC> {
                 await Future.delayed(Duration(seconds: 3));
                 Navigator.pop(context);
               } else {
-                bool statement = await sendEmail(contacted);
+                bool statement = await sendAlert(contacted);
 
                 if (statement == true) {
                   Navigator.pop(context);

@@ -176,56 +176,65 @@ class _HomeState extends State<MapHome> {
         String thisid = value.id;
         Map thisdata = value.data();
         GeoPoint thisloc = thisdata["location"];
-        if(thisloc!=null){
-        if (thisid == widget.userid) {
-          Uint8List imageData = await getMarker();
-          markers.add(Marker(
-            icon: BitmapDescriptor.fromBytes(imageData),
-            markerId: MarkerId(thisid),
-            position: LatLng(thisloc.latitude, thisloc.longitude),
-            draggable: false,
-            zIndex: 2,
-            flat: false,
-            anchor: Offset(0.5, 0.5),
-          ));
-          circles.add(Circle(
-            circleId: CircleId(thisid),
-            radius: 500,
-            zIndex: 1,
-            strokeColor: Colors.blue,
-            center: LatLng(thisloc.latitude, thisloc.longitude),
-            fillColor: Colors.blue.withAlpha(70),
-          ));
-                  } else {
+        if (thisloc != null) {
           DocumentSnapshot data = await FirebaseFirestore.instance
-              .collection('UserData')
-              .doc(thisid)
-              .get();
-          Color circleColor = Colors.green;
-          List userData = data.data()["risk"];
-          if (userData.length != 0 && userData[0] == "High Risk") {
-            setState(() {
-              circleColor = Colors.red;
-            });
+                .collection('UserData')
+                .doc(thisid)
+                .get();
+            Color circleColor = Colors.blue;
+            List userData = data.data()["risk"];
+            if (userData.length != 0 && userData[userData.length-1] == "High Risk") {
+              setState(() {
+                circleColor = Colors.red;
+              });
+            }
+            if (userData.length != 0 && userData[userData.length-1] == "Low Risk") {
+              setState(() {
+                circleColor = Colors.green;
+              });
+            }
+          if (thisid == widget.userid) {
+            Uint8List imageData = await getMarker();
+            markers.add(Marker(
+              infoWindow:
+                  InfoWindow(title: "${thisloc.latitude},${thisloc.longitude}"),
+              icon: BitmapDescriptor.fromBytes(imageData),
+              markerId: MarkerId(thisid),
+              position: LatLng(thisloc.latitude, thisloc.longitude),
+              draggable: false,
+              zIndex: 2,
+              flat: false,
+              anchor: Offset(0.5, 0.5),
+            ));
+            circles.add(Circle(
+              circleId: CircleId(thisid),
+              radius: 100,
+              zIndex: 1,
+              strokeColor: circleColor,
+              center: LatLng(thisloc.latitude, thisloc.longitude),
+              fillColor: Colors.blue.withAlpha(70),
+            ));
+          } else {
+            markers.add(Marker(
+              infoWindow:
+                  InfoWindow(title: "${thisloc.latitude},${thisloc.longitude}"),
+              markerId: MarkerId(thisid),
+              position: LatLng(thisloc.latitude, thisloc.longitude),
+              draggable: false,
+              zIndex: 2,
+              flat: false,
+              anchor: Offset(0.5, 0.5),
+            ));
+            circles.add(Circle(
+              circleId: CircleId(thisid),
+              radius: 100,
+              zIndex: 1,
+              strokeColor: circleColor,
+              center: LatLng(thisloc.latitude, thisloc.longitude),
+              fillColor: circleColor.withAlpha(70),
+            ));
           }
-          markers.add(Marker(
-            markerId: MarkerId(thisid),
-            position: LatLng(thisloc.latitude, thisloc.longitude),
-            draggable: false,
-            zIndex: 2,
-            flat: false,
-            anchor: Offset(0.5, 0.5),
-          ));
-          circles.add(Circle(
-            circleId: CircleId(thisid),
-            radius: 500,
-            zIndex: 1,
-            strokeColor: circleColor,
-            center: LatLng(thisloc.latitude, thisloc.longitude),
-            fillColor: circleColor.withAlpha(70),
-          ));
         }
-      }
       }
     } catch (e) {
       print(e.toString());

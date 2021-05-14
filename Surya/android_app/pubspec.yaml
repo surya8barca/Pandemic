@@ -45,6 +45,9 @@ dependencies:
   flutter_plugin_pdf_viewer:
   vector_math:
   flutter_email_sender:
+  flutter_sms:
+  url_launcher:
+  firebase_messaging:
 # geofence:
 
 dev_dependencies:

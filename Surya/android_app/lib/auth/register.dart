@@ -144,7 +144,7 @@ class _HomeState extends State<Register> {
     }
   }
 
-  GeoPoint current;
+  GeoPoint current = GeoPoint(20.5937, 78.9629);
 
   final CollectionReference neighbour =
       FirebaseFirestore.instance.collection('Contacted People');

@@ -329,7 +329,7 @@ class _HomeState extends State<UserHome> {
                     ],
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 32,
+                    height: MediaQuery.of(context).size.height / 24,
                   ),
                   Divider(
                     height: MediaQuery.of(context).size.height / 128,
